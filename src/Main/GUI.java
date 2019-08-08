@@ -25,13 +25,19 @@ public class GUI extends JFrame {
 
     private Container cp;
 
-    private JLabel lbCpf = new JLabel("CPF");
-    private JTextField tfCpf = new JTextField(20);
+    private JLabel lbPlaca = new JLabel("Placa");
+    private JTextField tfPlaca = new JTextField(20);
     private JLabel lbNome = new JLabel("Nome");
     private JTextField tfNome = new JTextField(50);
-    private JLabel lbSalario = new JLabel("Salário");
-    private JTextField tfSalario = new JTextField(20);
-    private JCheckBox cbAposentado = new JCheckBox("Aposentado", false);
+    private JLabel lbMarca = new JLabel("Marca");
+    private JTextField tfMarca = new JTextField(50);
+    private JLabel lbModelo = new JLabel("Modelo");
+    private JTextField tfModelo = new JTextField(50);
+    private JLabel lbPeso = new JLabel("Peso");
+    private JTextField tfPeso = new JTextField(20);
+    private JLabel lbAltura = new JLabel("Altura");
+    private JTextField tfAltura = new JTextField(20);
+    private JCheckBox cbAtivo = new JCheckBox("Ativo", false);
     private JButton btAdicionar = new JButton("Adicionar");
     private JButton btListar = new JButton("Listar");
     private JButton btBuscar = new JButton("Buscar");
@@ -50,14 +56,14 @@ public class GUI extends JFrame {
     private String chavePrimaria = "";
 
     private Controle controle = new Controle();
-    private Trabalhador trabalhador = new Trabalhador();
+    private Veiculo veiculo = new Veiculo();
 
     public GUI() {
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
         setSize(800, 500);
-        setTitle("CRUD Trabalhador - V5");
+        setTitle("CRUD Veiculo - Prova");
         setLocationRelativeTo(null);//centro do monitor
 
         cp = getContentPane();
@@ -75,16 +81,22 @@ public class GUI extends JFrame {
         painelNorte.setLayout(new GridLayout(1, 1));
         painelNorte.add(toolBar);
 
-        painelCentro.setLayout(new GridLayout(3, 2));
+        painelCentro.setLayout(new GridLayout(6, 2));
 
         painelCentro.add(lbNome);
         painelCentro.add(tfNome);
-        painelCentro.add(lbSalario);
-        painelCentro.add(tfSalario);
-        painelCentro.add(cbAposentado);
+        painelCentro.add(lbMarca);
+        painelCentro.add(tfMarca);
+        painelCentro.add(lbModelo);
+        painelCentro.add(tfModelo);
+        painelCentro.add(lbPeso);
+        painelCentro.add(tfPeso);
+        painelCentro.add(lbAltura);
+        painelCentro.add(tfAltura);
+        painelCentro.add(cbAtivo);
 
-        toolBar.add(lbCpf);
-        toolBar.add(tfCpf);
+        toolBar.add(lbPlaca);
+        toolBar.add(tfPlaca);
         toolBar.add(btAdicionar);
         toolBar.add(btBuscar);
         toolBar.add(btListar);
@@ -100,40 +112,52 @@ public class GUI extends JFrame {
         btCancelar.setVisible(false);
 
         tfNome.setEditable(false);
-        tfSalario.setEditable(false);//atributos começam bloqueados
-        cbAposentado.setEnabled(false);
+        tfMarca.setEditable(false);
+        tfModelo.setEditable(false);
+        tfPeso.setEditable(false);//atributos começam bloqueados
+        tfAltura.setEditable(false);//atributos começam bloqueados
+        cbAtivo.setEnabled(false);
         texto.setEditable(false);
 
         btBuscar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 btAdicionar.setVisible(false);
-                if (tfCpf.getText().trim().isEmpty()) {
-                    JOptionPane.showMessageDialog(cp, "CPF nâo pode ser vazio");
-                    tfCpf.requestFocus();
-                    tfCpf.selectAll();
+                if (tfPlaca.getText().trim().isEmpty()) {
+                    JOptionPane.showMessageDialog(cp, "Placa não pode ser vazio");
+                    tfPlaca.requestFocus();
+                    tfPlaca.selectAll();
                 } else {
-                    chavePrimaria = tfCpf.getText();//para uso no adicionar
-                    trabalhador = controle.buscar(tfCpf.getText());
-                    if (trabalhador == null) {//nao encontrou
+                    chavePrimaria = tfPlaca.getText();//para uso no adicionar
+                    veiculo = controle.buscar(Integer.valueOf(tfPlaca.getText()));
+                    if (veiculo == null) {//nao encontrou
                         btAdicionar.setVisible(true);
                         btAlterar.setVisible(false);
                         btExcluir.setVisible(false);
                         tfNome.setText("");
-                        tfSalario.setText("");
-                        cbAposentado.setSelected(false);
+                        tfMarca.setText("");
+                        tfModelo.setText("");
+                        tfPeso.setText("");
+                        tfAltura.setText("");
+                        cbAtivo.setSelected(false);
                         texto.setText("Não encontrou na lista - pode Adicionar\n\n\n");//limpa o campo texto
 
                     } else {//encontrou
-                        tfNome.setText(trabalhador.getNome());
-                        tfSalario.setText(String.valueOf(trabalhador.getSalario()));
-                        cbAposentado.setSelected(trabalhador.isAposentado());
+                        tfNome.setText(veiculo.getNome());
+                        tfMarca.setText(veiculo.getMarca());
+                        tfModelo.setText(veiculo.getModelo());
+                        tfPeso.setText(String.valueOf(veiculo.getPeso()));
+                        tfAltura.setText(String.valueOf(veiculo.getAltura()));
+                        cbAtivo.setSelected(veiculo.isAtivo());
                         btAlterar.setVisible(true);
                         btExcluir.setVisible(true);
                         texto.setText("Encontrou na lista - pode Alterar ou Excluir\n\n\n");//limpa o campo texto
                         tfNome.setEditable(false);
-                        tfSalario.setEditable(false);//atributos começam bloqueados
-                        cbAposentado.setEnabled(false);
+                        tfMarca.setEditable(false);
+                        tfModelo.setEditable(false);
+                        tfPeso.setEditable(false);//atributos começam bloqueados
+                        tfAltura.setEditable(false);//atributos começam bloqueados
+                        cbAtivo.setEnabled(false);
                     }
                 }
             }
@@ -143,8 +167,8 @@ public class GUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 acao = "adicionar";
-                tfCpf.setText(chavePrimaria);//para retornar ao valor original (caso o usuário mude e tente enganar o programa)
-                tfCpf.setEditable(false);
+                tfPlaca.setText(chavePrimaria);//para retornar ao valor original (caso o usuário mude e tente enganar o programa)
+                tfPlaca.setEditable(false);
                 tfNome.requestFocus();
                 btSalvar.setVisible(true);
                 btCancelar.setVisible(true);
@@ -156,8 +180,11 @@ public class GUI extends JFrame {
                 btAdicionar.setVisible(false);
                 texto.setText("Preencha os atributos\n\n\n\n\n");//limpa o campo texto
                 tfNome.setEditable(true);
-                tfSalario.setEditable(true);
-                cbAposentado.setEnabled(true);
+                tfMarca.setEditable(true);
+                tfModelo.setEditable(true);
+                tfPeso.setEditable(true);//atributos começam bloqueados
+                tfAltura.setEditable(true);//atributos começam bloqueados
+                cbAtivo.setEnabled(true);
             }
         });
 
@@ -165,8 +192,8 @@ public class GUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 acao = "alterar";
-                tfCpf.setText(chavePrimaria);//para retornar ao valor original (caso o usuário mude e tente enganar o programa)
-                tfCpf.setEditable(false);
+                tfPlaca.setText(chavePrimaria);//para retornar ao valor original (caso o usuário mude e tente enganar o programa)
+                tfPlaca.setEditable(false);
                 tfNome.requestFocus();
                 btSalvar.setVisible(true);
                 btCancelar.setVisible(true);
@@ -176,8 +203,11 @@ public class GUI extends JFrame {
                 btExcluir.setVisible(false);
                 texto.setText("Preencha os atributos\n\n\n\n\n");//limpa o campo texto
                 tfNome.setEditable(true);
-                tfSalario.setEditable(true);
-                cbAposentado.setEnabled(true);
+                tfMarca.setEditable(true);
+                tfModelo.setEditable(true);
+                tfPeso.setEditable(true);//atributos começam bloqueados
+                tfAltura.setEditable(true);//atributos começam bloqueados
+                cbAtivo.setEnabled(true);
             }
         });
 
@@ -188,16 +218,22 @@ public class GUI extends JFrame {
                 btCancelar.setVisible(false);
                 btBuscar.setVisible(true);
                 btListar.setVisible(true);
-                tfCpf.setEditable(true);
+                tfPlaca.setEditable(false);
                 tfNome.setText("");
-                tfSalario.setText("");
-                cbAposentado.setSelected(false);
-                tfCpf.requestFocus();
-                tfCpf.selectAll();
+                tfMarca.setText("");
+                tfModelo.setText("");
+                tfPeso.setText("");
+                tfAltura.setText("");
+                cbAtivo.setSelected(false);
+                tfPlaca.requestFocus();
+                tfPlaca.selectAll();
                 texto.setText("Cancelou\n\n\n\n\n");//limpa o campo texto
                 tfNome.setEditable(false);
-                tfSalario.setEditable(false);
-                cbAposentado.setEnabled(false);
+                tfMarca.setEditable(false);
+                tfModelo.setEditable(false);
+                tfPeso.setEditable(false);//atributos começam bloqueados
+                tfAltura.setEditable(false);//atributos começam bloqueados
+                cbAtivo.setEnabled(false);
             }
         });
 
@@ -205,71 +241,89 @@ public class GUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (acao.equals("alterar")) {
-                    Trabalhador trabalhadorAntigo = trabalhador;
-                    trabalhador.setNome(tfNome.getText());
-                    trabalhador.setSalario(Double.valueOf(tfSalario.getText()));
-                    trabalhador.setAposentado(cbAposentado.isSelected());
-                    controle.alterar(trabalhador, trabalhadorAntigo);
+                    Veiculo veiculoAntigo = veiculo;
+                    veiculo.setNome(tfNome.getText());
+                    veiculo.setMarca(tfMarca.getText());
+                    veiculo.setModelo(tfModelo.getText());
+                    veiculo.setPeso(Float.valueOf(tfPeso.getText()));
+                    veiculo.setAltura(Double.valueOf(tfAltura.getText()));
+                    veiculo.setAtivo(cbAtivo.isSelected());
+                    controle.alterar(veiculo, veiculoAntigo);
                     texto.setText("Registro alterado\n\n\n\n\n");//limpa o campo texto
                 } else {//adicionar
-                    trabalhador = new Trabalhador();
-                    trabalhador.setCpf(tfCpf.getText());
-                    trabalhador.setNome(tfNome.getText());
-                    trabalhador.setSalario(Double.valueOf(tfSalario.getText()));
-                    trabalhador.setAposentado(cbAposentado.isSelected());
-                    controle.adicionar(trabalhador);
+                    veiculo = new Veiculo();
+                    veiculo.setPlaca(Integer.valueOf(tfPlaca.getText()));
+                    veiculo.setNome(tfNome.getText());
+                    veiculo.setMarca(tfMarca.getText());
+                    veiculo.setModelo(tfModelo.getText());
+                    veiculo.setPeso(Float.valueOf(tfPeso.getText()));
+                    veiculo.setAltura(Double.valueOf(tfAltura.getText()));                    
+                    veiculo.setAtivo(cbAtivo.isSelected());
+                   
+                    controle.adicionar(veiculo);
                     texto.setText("Foi adicionado um novo registro\n\n\n\n\n");//limpa o campo texto
                 }
                 btSalvar.setVisible(false);
                 btCancelar.setVisible(false);
                 btBuscar.setVisible(true);
                 btListar.setVisible(true);
-                tfCpf.setEditable(true);
-                tfNome.setText("");
-                tfSalario.setText("");
-                tfCpf.requestFocus();
-                tfCpf.selectAll();
+                tfPlaca.setEditable(true);
+                 tfNome.setText("");
+                tfMarca.setText("");
+                tfModelo.setText("");
+                tfPeso.setText("");
+                tfAltura.setText("");
+                tfPlaca.requestFocus();
+                tfPlaca.selectAll();
                 tfNome.setEditable(false);
-                tfSalario.setEditable(false);
-                cbAposentado.setSelected(false);
-                cbAposentado.setEnabled(true);
+                tfMarca.setEditable(false);
+                tfModelo.setEditable(false);
+                tfPeso.setEditable(false);//atributos começam bloqueados
+                tfAltura.setEditable(false);//atributos começam bloqueados
+                cbAtivo.setEnabled(false);
             }
 
         });
         btExcluir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                tfCpf.setText(chavePrimaria);//para retornar ao valor original (caso o usuário mude e tente enganar o programa)
+                tfPlaca.setText(chavePrimaria);//para retornar ao valor original (caso o usuário mude e tente enganar o programa)
                 if (JOptionPane.YES_OPTION
                         == JOptionPane.showConfirmDialog(null,
-                                "Confirma a exclusão do registro <Nome = " + trabalhador.getNome() + ">?", "Confirm",
+                                "Confirma a exclusão do registro <Nome = " + veiculo.getNome() + ">?", "Confirm",
                                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)) {
-                    controle.excluir(trabalhador);
+                    controle.excluir(veiculo);
                 }
                 btBuscar.setVisible(true);
                 btListar.setVisible(true);
-                tfCpf.setEditable(true);
+                tfPlaca.setEditable(true);
                 tfNome.setText("");
-                tfSalario.setText("");
-                cbAposentado.setSelected(false);
-                cbAposentado.setEnabled(true);
-                tfCpf.requestFocus();
-                tfCpf.selectAll();
+                tfPeso.setText("");
+                cbAtivo.setSelected(false);
+                cbAtivo.setEnabled(true);
+                tfPlaca.requestFocus();
+                tfPlaca.selectAll();
                 btExcluir.setVisible(false);
                 btAlterar.setVisible(false);
-                texto.setText("Excluiu o registro de " + trabalhador.getCpf() + " - " + trabalhador.getNome() + "\n\n\n\n\n");//limpa o campo texto
+                texto.setText("Excluiu o registro de " 
+                        + veiculo.getPlaca()+ " - " 
+                        + veiculo.getNome() + "\n\n\n\n\n");//limpa o campo texto
             }
         });
 
         btListar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                List<Trabalhador> lt = controle.listar();
+                List<Veiculo> lt = controle.listar();
                 texto.setText("Id - Nome - Salário - Aposentado\n");//limpa o textArea
                 for (int i = 0; i < lt.size(); i++) {
-                    texto.append(lt.get(i).getCpf() + "-"
+                    texto.append(lt.get(i).getPlaca()+ "-"
                             + lt.get(i).getNome() + "-"
-                            + lt.get(i).getSalario() + " - " + (lt.get(i).isAposentado() ? "Sim" : "Não") + "\n");
+                            + lt.get(i).getMarca()+ "-"
+                            + lt.get(i).getModelo()+ "-"
+                            + lt.get(i).getPeso()+ " - " 
+                            + lt.get(i).getAltura()+ " - " 
+                            + (lt.get(i).isAtivo()? "Ativo" : "Não ativo") + "\n");
                 }
                 btAlterar.setVisible(false);
                 btExcluir.setVisible(false);

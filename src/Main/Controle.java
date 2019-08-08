@@ -9,35 +9,39 @@ import java.util.List;
  */
 public class Controle {
 
-    List<Trabalhador> lista = new ArrayList<>();
+    List<Veiculo> lista = new ArrayList<>();
 
     public Controle() { //esse construtor é usado para adicionar alguns dados na lista e 
         //facilitar os testes, quando fizermos a persistência em arquivo ele deverá ser excluído
-        Trabalhador t = new Trabalhador();
-        t.setCpf("123");
-        t.setNome("Timocréia");
-        t.setSalario(5000);
-        t.setAposentado(false);
-        adicionar(t);
-        t = new Trabalhador("456", "Berola", 3252.97,true);
-        adicionar(t);
-        t = new Trabalhador("789", "Reduzina", 3000.30,false);
-        adicionar(t);
-        t = new Trabalhador("111", "Zulida", 3000.30,true);
-        adicionar(t);
+        Veiculo veiculo = new Veiculo();
+        veiculo.setPlaca(456);
+        veiculo.setNome("Fusca");
+        veiculo.setMarca("VW");
+        veiculo.setPeso(1000);
+        veiculo.setAltura(1.70);
+        veiculo.setAtivo(true);
+        adicionar(veiculo);
+
+        veiculo = new Veiculo(123, "Fusion", "ford", "l", 1200, 1.50, false);
+        adicionar(veiculo);
+
+        veiculo = new Veiculo(222, "Camaro", "ford", "xt", 1500, 1.40, true);
+        adicionar(veiculo);
+        veiculo = new Veiculo(333, "Jeep", "Jeep", "1951", 800, 1.50, false);
+        adicionar(veiculo);
     }
 
-    public void adicionar(Trabalhador trabalhador) {
-        lista.add(trabalhador);
+    public void adicionar(Veiculo veiculo) {
+        lista.add(veiculo);
     }
 
-    public List<Trabalhador> listar() {
+    public List<Veiculo> listar() {
         return lista;
     }
 
-    public Trabalhador buscar(String cpf) {
+    public Veiculo buscar(int placa) {
         for (int i = 0; i < lista.size(); i++) {
-            if (lista.get(i).getCpf().equals(cpf)) {
+            if (lista.get(i).getPlaca()==placa) {
                 return lista.get(i);
             }
         }
@@ -45,13 +49,13 @@ public class Controle {
 
     }
 
-    public void alterar(Trabalhador trabalhador, Trabalhador trabalhadorAntigo) {
-        lista.set(lista.indexOf(trabalhadorAntigo), trabalhador);
+    public void alterar(Veiculo veiculo, Veiculo veiculoAntigo) {
+        lista.set(lista.indexOf(veiculoAntigo), veiculo);
 
     }
 
-    public void excluir(Trabalhador trabalhador) {
-        lista.remove(trabalhador);
+    public void excluir(Veiculo veiculo) {
+        lista.remove(veiculo);
     }
 
 }
